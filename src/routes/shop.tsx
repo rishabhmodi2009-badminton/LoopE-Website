@@ -1,42 +1,52 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageHero, Placeholder, Section } from "@/components/site-layout";
+import { PageHead, Section, Swatch } from "@/components/site-layout";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "Shop — LoopE Leashes" },
-      { name: "description", content: "Browse LoopE recyclable leashes, collars and harnesses." },
-      { property: "og:title", content: "Shop — LoopE Leashes" },
-      { property: "og:description", content: "Recyclable leashes, collars and harnesses." },
+      { title: "Shop — LoopE" },
+      {
+        name: "description",
+        content: "LoopE leashes, collars and accessories made from upcycled textiles in Singapore.",
+      },
+      { property: "og:title", content: "Shop — LoopE" },
+      { property: "og:description", content: "Pet gear made from upcycled textiles." },
     ],
   }),
   component: Shop,
 });
 
 const products = [
-  { name: "Classic Loop Leash", price: "$29" },
-  { name: "Trail Rope Leash", price: "$34" },
-  { name: "City Short Leash", price: "$24" },
-  { name: "Hands-Free Loop", price: "$39" },
-  { name: "Loop Collar", price: "$19" },
-  { name: "Comfort Harness", price: "$45" },
-];
+  { name: "Loop Leash", note: "Braided from fabric offcuts. Our first and main product." },
+  { name: "Trail Rope Leash", note: "Longer and thicker, for park runs and bigger dogs." },
+  { name: "Hands-Free Loop", note: "Worn across the body so both hands stay free." },
+  { name: "Loop Collar", note: "Soft-edged and adjustable." },
+  { name: "Comfort Harness", note: "Padded with scraps that would otherwise be too small to use." },
+  { name: "Bag Pouch", note: "Clips to any leash. Made from what's left over from everything else." },
+] as const;
 
 function Shop() {
   return (
     <>
-      <PageHero eyebrow="Shop" title="Our Leashes">Every product is made from recycled plastics and can be recycled again.</PageHero>
+      <PageHead index="01" name="Shop" title="The range">
+        Everything here is made from discarded textiles. Fabrics change batch to batch, so no two
+        pieces look quite the same. Prices will be posted at launch.
+      </PageHead>
+
       <Section>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <div key={p.name} className="rounded-xl border border-border bg-card p-4">
-              <Placeholder label="Product image" />
-              <div className="mt-4 flex items-center justify-between">
-                <h2 className="text-base uppercase">{p.name}</h2>
-                <span className="font-semibold text-accent">{p.price}</span>
+        <div className="grid gap-x-10 gap-y-16 md:grid-cols-2">
+          {products.map((p, i) => (
+            <article key={p.name} className={i % 2 ? "md:mt-24" : ""}>
+              <Swatch label={p.name} className="aspect-[4/3]" />
+              <div className="mt-5 flex items-baseline justify-between gap-4 border-b-2 border-ink pb-3">
+                <h2 className="text-3xl sm:text-4xl">{p.name}</h2>
+                <span className="label shrink-0 text-ink-soft">Price at launch</span>
               </div>
-              <Link to="/buy" className="mt-3 inline-block text-sm text-muted-foreground hover:text-accent">Buy now →</Link>
-            </div>
+              <p className="mt-4 text-ink-soft">{p.note}</p>
+              <Link to="/buy" className="label link-under mt-4 inline-block">
+                How to order
+              </Link>
+            </article>
           ))}
         </div>
       </Section>

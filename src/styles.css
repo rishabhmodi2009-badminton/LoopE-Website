@@ -4,88 +4,53 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--paper);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--moss);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--paper-deep);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper-deep);
+  --color-muted-foreground: var(--ink-soft);
+  --color-accent: var(--moss);
+  --color-accent-foreground: var(--paper);
+  --color-destructive: oklch(0.55 0.2 27);
+  --color-destructive-foreground: var(--paper);
+  --color-border: var(--thread);
+  --color-input: var(--thread);
+  --color-ring: var(--moss);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-moss: var(--moss);
+  --color-moss-deep: var(--moss-deep);
+  --color-thread: var(--thread);
+
+  --font-display: "Archivo", sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.94 0.02 90);
-  --card: oklch(0.17 0.01 140);
-  --card-foreground: oklch(0.94 0.02 90);
-  --popover: oklch(0.17 0.01 140);
-  --popover-foreground: oklch(0.94 0.02 90);
-  --primary: oklch(0.55 0.12 140);
-  --primary-foreground: oklch(0.98 0.01 90);
-  --secondary: oklch(0.25 0.04 140);
-  --secondary-foreground: oklch(0.94 0.02 90);
-  --muted: oklch(0.2 0.02 140);
-  --muted-foreground: oklch(0.72 0.03 120);
-  --accent: oklch(0.72 0.14 135);
-  --accent-foreground: oklch(0.12 0 0);
-  --destructive: oklch(0.6 0.2 27);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.03 140);
-  --input: oklch(0.28 0.03 140);
-  --ring: oklch(0.55 0.12 140);
-  --font-display: "Archivo Black", sans-serif;
-  --font-body: "Hind", sans-serif;
+  /* Pulled from the logo: its black ground, cream lettering and moss arrows. */
+  --ink: #0b0b0a;
+  --ink-soft: #4a4740;
+  --paper: #efe8d6;
+  --paper-deep: #e4dbc4;
+  --moss: #4f8a3a;
+  --moss-deep: #2f5a22;
+  --thread: #c9bfa5;
 }
 
 @layer base {
@@ -93,10 +58,85 @@
     border-color: var(--color-border);
   }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-body);
+  html {
+    -webkit-text-size-adjust: 100%;
   }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  ::selection {
+    background: var(--moss);
+    color: var(--paper);
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* A running stitch, used wherever the site needs a divider. */
+  .stitch {
+    background-image: linear-gradient(90deg, currentColor 0 10px, transparent 10px 16px);
+    background-size: 16px 2px;
+    background-repeat: repeat-x;
+    height: 2px;
+  }
+
+  .stitch-y {
+    background-image: linear-gradient(180deg, currentColor 0 10px, transparent 10px 16px);
+    background-size: 2px 16px;
+    background-repeat: repeat-y;
+    width: 2px;
+  }
+
+  /* Plain weave: warp in moss, weft in cream. */
+  .weave {
+    background-color: var(--moss-deep);
+    background-image:
+      repeating-linear-gradient(0deg, rgb(239 232 214 / 0.55) 0 5px, transparent 5px 10px),
+      repeating-linear-gradient(90deg, var(--moss) 0 5px, transparent 5px 10px);
+  }
+
+  .weave-ink {
+    background-color: var(--ink);
+    background-image:
+      repeating-linear-gradient(0deg, rgb(239 232 214 / 0.08) 0 4px, transparent 4px 8px),
+      repeating-linear-gradient(90deg, rgb(79 138 58 / 0.35) 0 4px, transparent 4px 8px);
+  }
+
+  .link-under {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.2s ease;
+  }
+
+  .link-under:hover {
+    background-size: 0% 2px;
+    background-position: 100% 100%;
+  }
 }

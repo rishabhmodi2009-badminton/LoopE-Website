@@ -1,38 +1,60 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageHero, Placeholder, Section } from "@/components/site-layout";
+import { PageHead, Section, Swatch } from "@/components/site-layout";
 
 export const Route = createFileRoute("/buy")({
   head: () => ({
     meta: [
-      { title: "Buy — LoopE Leashes" },
-      { name: "description", content: "Order your recyclable LoopE leash." },
-      { property: "og:title", content: "Buy — LoopE Leashes" },
-      { property: "og:description", content: "Order your recyclable LoopE leash." },
+      { title: "Buy — LoopE" },
+      { name: "description", content: "How to order LoopE pet gear made from upcycled textiles." },
+      { property: "og:title", content: "Buy — LoopE" },
+      { property: "og:description", content: "How to order from LoopE." },
     ],
   }),
   component: Buy,
 });
 
-const steps = ["Choose your leash", "Pick a colour and length", "Check out securely", "Get it delivered"];
+const steps = [
+  { title: "Pick your gear", text: "Browse the range and choose what suits your pet." },
+  { title: "Choose size and fabric", text: "Tell us your pet's measurements. We'll show you which fabrics are in stock this batch." },
+  { title: "Check out", text: "Online checkout is on its way. Until then, message us and we'll sort it out by hand." },
+  { title: "Get it home", text: "Delivery and pickup options in Singapore will be confirmed at launch." },
+] as const;
 
 function Buy() {
   return (
     <>
-      <PageHero eyebrow="Buy" title="Get Your Leash">Ordering is simple. Online checkout is coming soon.</PageHero>
+      <PageHead index="04" name="Buy" title="Getting one">
+        Online checkout isn't live yet. Here's how ordering will work, and how to get one now.
+      </PageHead>
+
       <Section>
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <ol className="space-y-4">
+        <div className="grid gap-16 md:grid-cols-12">
+          <ol className="relative md:col-span-7">
+            <div aria-hidden className="stitch-y absolute top-3 bottom-3 left-[0.95rem] text-moss" />
             {steps.map((s, i) => (
-              <li key={s} className="flex items-center gap-4 rounded-xl border border-border bg-card p-4">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-primary-foreground">{i + 1}</span>
-                <span className="font-medium">{s}</span>
+              <li key={s.title} className="relative grid grid-cols-[2rem_1fr] gap-6 pb-12 last:pb-0">
+                <span className="label relative z-10 bg-paper py-1 text-center text-base text-moss">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h2 className="text-3xl sm:text-4xl">{s.title}</h2>
+                  <p className="mt-3 text-ink-soft">{s.text}</p>
+                </div>
               </li>
             ))}
           </ol>
-          <Link to="/shop" className="inline-flex w-fit rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-accent hover:text-accent-foreground md:col-span-2 md:order-last">
-            Browse the shop →
-          </Link>
-          <Placeholder label="Checkout image" />
+
+          <div className="md:col-span-4 md:col-start-9">
+            <Swatch label="packed orders" className="aspect-[3/4]" />
+            <div className="mt-8 flex flex-col gap-4">
+              <Link to="/contact" className="label bg-ink px-6 py-4 text-center text-paper hover:bg-moss">
+                Order by message
+              </Link>
+              <Link to="/shop" className="label link-under self-start">
+                Back to the range
+              </Link>
+            </div>
+          </div>
         </div>
       </Section>
     </>
