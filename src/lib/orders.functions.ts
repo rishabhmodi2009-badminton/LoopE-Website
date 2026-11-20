@@ -85,5 +85,37 @@ export const submitOrder = createServerFn({ method: "POST" })
       html: `<p>${escape(intro)}</p>${table([["Reference", ref], ...items])}<p>${escape(outro)}</p><p>The LoopE team</p>`,
     });
 
+    // The order is already in LoopE's inbox, so a Sheet failure is logged, not shown to the customer.
+    const sheetUrl = process.env["SHEET_WEBHOOK_URL"];
+    if (sheetUrl) {
+      try {
+        const res = await fetch(sheetUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            secret: process.env["SHEET_SECRET"],
+            id: order.id,
+            reference: ref,
+            name: order.name,
+            email: order.email,
+            phone: order.phone,
+            product: product.name,
+            quantity: order.quantity,
+            length: length.label,
+            colour: colour.label,
+            payment: order.payment,
+            total,
+            confirmationSent: confirmed,
+          }),
+        });
+        const result = await res.text();
+        if (!res.ok || !result.includes("ok")) console.error("Order sheet rejected the order", res.status, result.slice(0, 200));
+      } catch (error) {
+        console.error("Order sheet unreachable", error);
+      }
+    } else {
+      console.error("SHEET_WEBHOOK_URL is not set, so the order was not added to the sheet");
+    }
+
     return { id: order.id, total, product: product.name, confirmed };
   });
