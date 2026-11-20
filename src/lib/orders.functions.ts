@@ -54,12 +54,18 @@ export const submitOrder = createServerFn({ method: "POST" })
       ["Unit price", `S$${unitPrice}`],
     ];
 
-    // Sender and subject must stay as-is: the LoopE Gmail filter labels orders by them.
+    // Both emails share a subject and the confirmation points back at the order email's
+    // Message-ID, so Gmail keeps the order, the confirmation and all replies in one thread.
+    const subject = `LoopE order ${ref}: ${order.quantity} × ${product.name} (S$${total})`;
+    const orderMessageId = `<order-${order.id}@loope-leashes.com>`;
+
+    // The sender must stay as-is: the LoopE Gmail filter labels orders by it.
     const sentToLoope = await sendEmail(apiKey, `order-${order.id}`, {
       from: "LoopE Orders <onboarding@resend.dev>",
       to: [COMPANY_EMAIL],
       reply_to: order.email,
-      subject: `New order ${ref}: ${order.quantity} × ${product.name} (S$${total})`,
+      subject,
+      headers: { "Message-ID": orderMessageId },
       text: rows.map(([k, v]) => `${k}: ${v}`).join("\n"),
       html: `<h2>New LoopE order</h2>${table(rows)}<p>Reply to this email to send the customer their pickup date.</p>`,
     });
@@ -72,7 +78,8 @@ export const submitOrder = createServerFn({ method: "POST" })
       from: CUSTOMER_SENDER,
       to: [order.email],
       reply_to: COMPANY_EMAIL,
-      subject: `Your LoopE order ${ref} is confirmed`,
+      subject,
+      headers: { "In-Reply-To": orderMessageId, References: orderMessageId },
       text: [intro, "", ...[["Reference", ref], ...items].map(([k, v]) => `${k}: ${v}`), "", outro, "", "The LoopE team"].join("\n"),
       html: `<p>${escape(intro)}</p>${table([["Reference", ref], ...items])}<p>${escape(outro)}</p><p>The LoopE team</p>`,
     });
