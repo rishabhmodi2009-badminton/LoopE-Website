@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 const tabs = [
   { to: "/about", label: "About" },
   { to: "/why-choose-us", label: "Why Choose Us" },
-  { to: "/buy", label: "Buy" },
+  { to: "/purchase", label: "Buy" },
   { to: "/contact", label: "Contact" },
 ] as const;
 

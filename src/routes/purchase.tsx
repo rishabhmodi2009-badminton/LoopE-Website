@@ -3,7 +3,7 @@ import { useState, type FormEvent } from "react";
 import { PageHero, Section } from "@/components/site-layout";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { products, lengths, colours, payments } from "@/lib/orders";
+import { products, lengths, colours, payments, EMAIL_PATTERN, PHONE_PATTERN } from "@/lib/orders";
 import { submitOrder } from "@/lib/orders.functions";
 import { COMPANY_EMAIL, PICKUP_LOCATION } from "@/lib/company";
 
@@ -29,7 +29,7 @@ function Purchase() {
   const [length, setLength] = useState(0);
   const [colour, setColour] = useState(0);
   const [pay, setPay] = useState<(typeof payments)[number]>(payments[0]);
-  const [done, setDone] = useState<{ id: string; total: number; product: string } | null>(null);
+  const [done, setDone] = useState<{ id: string; total: number; product: string; confirmed: boolean; email: string } | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -49,13 +49,14 @@ function Purchase() {
     setOrderId(id);
     setPending(true);
     setError("");
+    const email = String(form.get("email") ?? "").trim();
     try {
       const result = await saveOrder({ data: {
-        id, name: String(form.get("name") ?? ""), email: String(form.get("email") ?? ""),
+        id, name: String(form.get("name") ?? ""), email,
         phone: String(form.get("phone") ?? ""),
         product, quantity: qty, length, colour, payment: pay,
       } });
-      setDone(result);
+      setDone({ ...result, email });
       window.scrollTo({ top: 0 });
     } catch {
       setError("Your order could not be sent. Please try again or email us at " + COMPANY_EMAIL + ".");
@@ -68,8 +69,9 @@ function Purchase() {
     return (
       <PageHero eyebrow="Thank you" title="Order Received">
         Your order of {qty} × {done.product} (S${done.total}) has been sent to the LoopE team. Reference: {done.id.slice(0, 8)}.
-        Pick it up at the {PICKUP_LOCATION} and pay there by {pay === "Cash" ? "cash" : "PayNow"}. We'll send you a
-        follow-up email with your pickup date. Questions? Email {COMPANY_EMAIL}.
+        {done.confirmed && <> A confirmation has been emailed to {done.email}.</>} Someone from the LoopE team will reach
+        out to you about when your order will be ready for pickup at the {PICKUP_LOCATION}, where you'll pay
+        by {pay === "Cash" ? "cash" : "PayNow"}. Questions? Email {COMPANY_EMAIL}.
       </PageHero>
     );
 
@@ -82,8 +84,8 @@ function Purchase() {
             <fieldset className="space-y-3">
               <legend className="mb-3 text-xl uppercase">Your details</legend>
               <input name="name" aria-label="Full name" autoComplete="name" required maxLength={100} placeholder="Full name" className={input} />
-              <input name="email" aria-label="Email" autoComplete="email" required type="email" maxLength={255} placeholder="Email" className={input} />
-              <input name="phone" aria-label="Phone number" autoComplete="tel" required type="tel" maxLength={20} placeholder="Phone number" className={input} />
+              <input name="email" aria-label="Email" autoComplete="email" required type="email" maxLength={255} pattern={EMAIL_PATTERN} title="Enter a valid email address, e.g. name@example.com" placeholder="Email" className={input} />
+              <input name="phone" aria-label="Phone number" autoComplete="tel" required type="tel" maxLength={20} pattern={PHONE_PATTERN} title="Enter a valid Singapore number (e.g. 8123 4567 or +65 8123 4567), or an international number starting with +" placeholder="Phone number (e.g. 8123 4567)" className={input} />
             </fieldset>
             <fieldset className="space-y-3">
               <legend className="mb-3 text-xl uppercase">Product</legend>

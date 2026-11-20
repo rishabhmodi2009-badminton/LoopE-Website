@@ -22,3 +22,22 @@ describe("Purchase orders", () => {
     expect(orderSchema.safeParse({ ...order, phone: "" }).success).toBe(false);
   });
 });
+
+describe("Contact details validation", () => {
+  const ok = (patch: Partial<typeof order>) => orderSchema.safeParse({ ...order, ...patch }).success;
+  it("accepts Singapore and international phone numbers", () => {
+    for (const phone of ["81234567", "8123 4567", "+65 9123 4567", "+6561234567", "+1 415 555 0123"]) {
+      expect(ok({ phone })).toBe(true);
+    }
+  });
+  it("rejects invalid phone numbers", () => {
+    for (const phone of ["1234", "12345678", "abcdefgh", "8123456", "+65 1234 5678", ""]) {
+      expect(ok({ phone })).toBe(false);
+    }
+  });
+  it("rejects invalid emails", () => {
+    for (const email of ["test", "test@", "test@example", "a b@example.com", "test@example.c"]) {
+      expect(ok({ email })).toBe(false);
+    }
+  });
+});

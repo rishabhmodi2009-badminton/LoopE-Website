@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 const summaries = [
   { to: "/about", title: "About", text: "Who we are and why we started LoopE." },
   { to: "/why-choose-us", title: "Why Choose Us", text: "Strong, comfortable, and fully recyclable." },
-  { to: "/buy", title: "Buy", text: "Pick your leash and order in a few steps." },
+  { to: "/purchase", title: "Buy", text: "Order online, then pick up and pay at the SAS High School Office." },
   { to: "/contact", title: "Contact", text: "Questions? We'd love to hear from you." },
 ] as const;
 

@@ -37,7 +37,7 @@ function Shop() {
                 <h2 className="text-base uppercase">{p.name}</h2>
                 <span className="font-semibold text-accent">{p.price}</span>
               </div>
-              <Link to="/buy" className="mt-3 inline-block text-sm text-muted-foreground hover:text-accent">Buy now →</Link>
+              <Link to="/purchase" className="mt-3 inline-block text-sm text-muted-foreground hover:text-accent">Buy now →</Link>
             </div>
           ))}
         </div>

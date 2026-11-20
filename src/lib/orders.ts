@@ -10,12 +10,17 @@ export const lengths = [{ label: "Standard (no extra)", extra: 0 }, { label: "1.
 export const colours = [{ label: "Standard (no extra)", extra: 0 }, { label: "Forest Green", extra: 4 }, { label: "Midnight Black", extra: 4 }, { label: "Sage", extra: 4 }];
 export const payments = ["Cash", "PayNow"] as const;
 
+// Singapore numbers are 8 digits starting with 3, 6, 8 or 9 (optional +65);
+// anything else must be a full international number starting with +.
+export const PHONE_PATTERN = String.raw`(\+65[\s\-]?)?[3689]\d{3}[\s\-]?\d{4}|\+(?!65)[1-9][\d\s\-]{7,17}`;
+export const EMAIL_PATTERN = String.raw`[^\s@]+@[^\s@]+\.[A-Za-z]{2,}`;
+
 const text = (max: number) => z.string().trim().min(1).max(max);
 export const orderSchema = z.object({
   id: z.string().uuid(),
   name: text(100),
-  email: z.string().trim().email().max(255),
-  phone: text(20),
+  email: z.string().trim().max(255).email().regex(new RegExp(`^${EMAIL_PATTERN}$`)),
+  phone: z.string().trim().max(20).regex(new RegExp(`^(?:${PHONE_PATTERN})$`)),
   product: z.number().int().min(0).max(products.length - 1),
   quantity: z.number().int().min(1).max(20),
   length: z.number().int().min(0).max(lengths.length - 1),
