@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Purchase submissions use a validated public server function with private server-only inserts; this keeps customer details inaccessible to visitors.
+- Share purchase options between the form and server validation, and calculate totals on the server to prevent tampered prices.
+- Keep company contact details in a shared constant so public contact information and order recipients stay consistent.

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BuyRouteImport } from './routes/buy'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PurchaseRouteImport } from './routes/purchase'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as WhyChooseUsRouteImport } from './routes/why-choose-us'
 
@@ -36,6 +37,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PurchaseRoute = PurchaseRouteImport.update({
+  id: '/purchase',
+  path: '/purchase',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/buy': typeof BuyRoute
   '/contact': typeof ContactRoute
+  '/purchase': typeof PurchaseRoute
   '/shop': typeof ShopRoute
   '/why-choose-us': typeof WhyChooseUsRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/buy': typeof BuyRoute
   '/contact': typeof ContactRoute
+  '/purchase': typeof PurchaseRoute
   '/shop': typeof ShopRoute
   '/why-choose-us': typeof WhyChooseUsRoute
 }
@@ -69,20 +77,36 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/buy': typeof BuyRoute
   '/contact': typeof ContactRoute
+  '/purchase': typeof PurchaseRoute
   '/shop': typeof ShopRoute
   '/why-choose-us': typeof WhyChooseUsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/buy' | '/contact' | '/shop' | '/why-choose-us'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/buy'
+    | '/contact'
+    | '/purchase'
+    | '/shop'
+    | '/why-choose-us'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/buy' | '/contact' | '/shop' | '/why-choose-us'
+  to:
+    | '/'
+    | '/about'
+    | '/buy'
+    | '/contact'
+    | '/purchase'
+    | '/shop'
+    | '/why-choose-us'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/buy'
     | '/contact'
+    | '/purchase'
     | '/shop'
     | '/why-choose-us'
   fileRoutesById: FileRoutesById
@@ -92,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BuyRoute: typeof BuyRoute
   ContactRoute: typeof ContactRoute
+  PurchaseRoute: typeof PurchaseRoute
   ShopRoute: typeof ShopRoute
   WhyChooseUsRoute: typeof WhyChooseUsRoute
 }
@@ -126,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/purchase': {
+      id: '/purchase'
+      path: '/purchase'
+      fullPath: '/purchase'
+      preLoaderRoute: typeof PurchaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -148,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BuyRoute: BuyRoute,
   ContactRoute: ContactRoute,
+  PurchaseRoute: PurchaseRoute,
   ShopRoute: ShopRoute,
   WhyChooseUsRoute: WhyChooseUsRoute,
 }

@@ -1,67 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHead, Section, Swatch } from "@/components/site-layout";
+import { Recycle, ShieldCheck, Heart, RotateCcw } from "lucide-react";
+import { PageHero, Placeholder, Section } from "@/components/site-layout";
 
 export const Route = createFileRoute("/why-choose-us")({
   head: () => ({
     meta: [
-      { title: "Why LoopE" },
-      {
-        name: "description",
-        content:
-          "Why LoopE: pet gear made from local discarded textiles, designed with pet owners and built to last.",
-      },
-      { property: "og:title", content: "Why LoopE" },
-      { property: "og:description", content: "Gear that started as someone else's waste." },
+      { title: "Why Choose Us — LoopE Leashes" },
+      { name: "description", content: "Why LoopE leashes are stronger, comfier and better for the planet." },
+      { property: "og:title", content: "Why Choose LoopE" },
+      { property: "og:description", content: "Strong, comfortable and fully recyclable leashes." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Why,
 });
 
 const reasons = [
-  {
-    title: "It was going to be rubbish",
-    text: "Every LoopE product starts as fabric a Singapore supplier was about to throw out. Buying one keeps that material in use instead of in an incinerator.",
-    swatch: "sorted offcuts",
-  },
-  {
-    title: "Owners designed it",
-    text: "We test ideas with local pet owners before anything goes into production. If your dog chews through clips or your cat hates collars, that changes what we make.",
-    swatch: "a fitting session",
-  },
-  {
-    title: "It has to survive a puller",
-    text: "Recycled shouldn't mean flimsy. Fabric that can't hold a dog lunging at a pigeon doesn't make the cut, and the points that take the strain get extra stitching.",
-    swatch: "stitching detail",
-  },
-  {
-    title: "Your money stays local",
-    text: "Suppliers, makers and the sustainability groups we support are all here. Buying LoopE puts money into Singapore's circular economy rather than a container ship.",
-    swatch: "a partner workshop",
-  },
-] as const;
+  { icon: Recycle, title: "Fully recyclable", text: "Made from recycled materials and recyclable again.", detail: "Every strand of a LoopE leash comes from recycled plastic. When it finally wears out, it can be broken down and remade into new gear, so nothing goes to waste." },
+  { icon: ShieldCheck, title: "Built strong", text: "Tested for pullers, big dogs and daily adventures.", detail: "Our tightly woven webbing and reinforced stitching are tested well beyond everyday loads, with sturdy metal clips that won't let go when your dog does." },
+  { icon: Heart, title: "Comfortable grip", text: "Soft handles that are easy on your hands.", detail: "Padded, ergonomic handles keep your grip comfortable on long walks and help prevent rope burn when your pup gets excited." },
+  { icon: RotateCcw, title: "Take-back program", text: "Send your old leash back and we'll recycle it.", detail: "When your leash reaches the end of its life, send it back to us. We recycle it into new products and give you a discount on your next order." },
+];
 
 function Why() {
   return (
     <>
-      <PageHead index="03" name="Why LoopE" title="Good for the walk. Good for the island.">
-        Plenty of pet gear calls itself eco-friendly. Here's what we can point to.
-      </PageHead>
-
+      <PageHero eyebrow="Why Choose Us" title="Better for dogs. Better for Earth." />
       <Section>
-        <ol className="border-t-2 border-ink">
+        <div className="space-y-20">
           {reasons.map((r, i) => (
-            <li key={r.title} className="grid gap-8 border-b border-ink/20 py-12 md:grid-cols-12 md:gap-10">
-              <span className="font-display text-7xl leading-none font-extrabold text-moss [font-stretch:75%] md:col-span-2">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="md:col-span-5">
-                <h2 className="text-4xl sm:text-5xl">{r.title}</h2>
-                <p className="mt-5 text-ink-soft">{r.text}</p>
+            <div key={r.title} className="grid items-center gap-10 md:grid-cols-2">
+              <div className={i % 2 ? "md:order-2" : ""}>
+                <r.icon className="h-8 w-8 text-accent" />
+                <h2 className="mt-4 text-3xl uppercase">{r.title}</h2>
+                <p className="mt-2 font-medium text-foreground">{r.text}</p>
+                <p className="mt-4 text-muted-foreground">{r.detail}</p>
               </div>
-              <Swatch label={r.swatch} className="h-56 md:col-span-4 md:col-start-9" />
-            </li>
+              <Placeholder label={`${r.title} image`} />
+            </div>
           ))}
-        </ol>
+        </div>
       </Section>
     </>
   );
