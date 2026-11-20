@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ImageIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import logo from "@/assets/LoopE.png.asset.json";
 
 const tabs = [
   { to: "/about", label: "About" },
@@ -15,7 +14,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-3">
         <Link to="/" aria-label="LoopE home">
-          <img src={logo.url} alt="LoopE Leashes logo" className="h-14 w-auto" />
+          <img src="/loope-logo.png" alt="LoopE Leashes logo" className="h-16 w-auto mix-blend-lighten sm:h-20" />
         </Link>
         <nav className="flex flex-wrap gap-1">
           {tabs.map((t) => (
