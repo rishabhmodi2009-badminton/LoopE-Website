@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 // Google Apps Script bound to the "LoopE Orders" sheet in the loope.leashes@gmail.com account.
 // Deployed as a web app; the website POSTs each confirmed order here (SHEET_WEBHOOK_URL).
 // SECRET must match the SHEET_SECRET secret in Cloudflare; the real value lives only in Apps Script.
