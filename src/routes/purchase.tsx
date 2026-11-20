@@ -59,7 +59,7 @@ function Purchase() {
       setDone(result);
       window.scrollTo({ top: 0 });
     } catch {
-      setError("Your order could not be saved. Please try again or contact " + COMPANY_EMAIL + ".");
+      setError("Your order could not be sent. Please try again or email us at " + COMPANY_EMAIL + ".");
     } finally {
       setPending(false);
     }
@@ -68,7 +68,7 @@ function Purchase() {
   if (done)
     return (
       <PageHero eyebrow="Thank you" title="Order Received">
-        Your order of {qty} × {done.product} (S${done.total}) has been saved. Reference: {done.id.slice(0, 8)}.
+        Your order of {qty} × {done.product} (S${done.total}) has been sent to the LoopE team. Reference: {done.id.slice(0, 8)}.
         No payment has been taken. Contact {COMPANY_EMAIL} for payment arrangements.
       </PageHero>
     );
@@ -124,7 +124,7 @@ function Purchase() {
             </div>
             <p className="text-sm text-muted-foreground">Payment preference only; no payment is collected here.</p>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={pending} className="h-auto w-full rounded-full px-6 py-3 font-semibold hover:bg-accent hover:text-accent-foreground">{pending ? "Saving order…" : "Check Out"}</Button>
+            <Button type="submit" disabled={pending} className="h-auto w-full rounded-full px-6 py-3 font-semibold hover:bg-accent hover:text-accent-foreground">{pending ? "Sending order…" : "Check Out"}</Button>
           </aside>
         </form>
       </Section>
