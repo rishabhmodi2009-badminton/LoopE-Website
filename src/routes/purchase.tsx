@@ -5,15 +5,15 @@ import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { products, lengths, colours, payments } from "@/lib/orders";
 import { submitOrder } from "@/lib/orders.functions";
-import { COMPANY_EMAIL } from "@/lib/company";
+import { COMPANY_EMAIL, PICKUP_LOCATION } from "@/lib/company";
 
 export const Route = createFileRoute("/purchase")({
   head: () => ({
     meta: [
       { title: "Purchase — LoopE Leashes" },
-      { name: "description", content: "Customise and check out your recyclable LoopE leash." },
+      { name: "description", content: "Order your LoopE leash for pickup at the SAS High School Office." },
       { property: "og:title", content: "Purchase — LoopE Leashes" },
-      { property: "og:description", content: "Customise your LoopE leash and check out." },
+      { property: "og:description", content: "Order your LoopE leash for pickup at the SAS High School Office." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -52,8 +52,7 @@ function Purchase() {
     try {
       const result = await saveOrder({ data: {
         id, name: String(form.get("name") ?? ""), email: String(form.get("email") ?? ""),
-        phone: String(form.get("phone") ?? ""), address: String(form.get("address") ?? ""),
-        postalCode: String(form.get("postalCode") ?? ""),
+        phone: String(form.get("phone") ?? ""),
         product, quantity: qty, length, colour, payment: pay,
       } });
       setDone(result);
@@ -69,13 +68,14 @@ function Purchase() {
     return (
       <PageHero eyebrow="Thank you" title="Order Received">
         Your order of {qty} × {done.product} (S${done.total}) has been sent to the LoopE team. Reference: {done.id.slice(0, 8)}.
-        No payment has been taken. Contact {COMPANY_EMAIL} for payment arrangements.
+        Pick it up at the {PICKUP_LOCATION} and pay there by {pay === "Cash" ? "cash" : "PayNow"}. We'll send you a
+        follow-up email with your pickup date. Questions? Email {COMPANY_EMAIL}.
       </PageHero>
     );
 
   return (
     <>
-      <PageHero eyebrow="Purchase" title="Your Order">Fill in your details, customise your leash, and check out.</PageHero>
+      <PageHero eyebrow="Purchase" title="Your Order">Fill in your details and customise your leash. Orders are collected and paid for in person at the {PICKUP_LOCATION}.</PageHero>
       <Section>
         <form onSubmit={submit} className="grid gap-10 md:grid-cols-[1fr_320px]">
           <div className="space-y-8">
@@ -84,8 +84,6 @@ function Purchase() {
               <input name="name" aria-label="Full name" autoComplete="name" required maxLength={100} placeholder="Full name" className={input} />
               <input name="email" aria-label="Email" autoComplete="email" required type="email" maxLength={255} placeholder="Email" className={input} />
               <input name="phone" aria-label="Phone number" autoComplete="tel" required type="tel" maxLength={20} placeholder="Phone number" className={input} />
-              <input name="address" aria-label="Delivery address" autoComplete="street-address" required maxLength={200} placeholder="Delivery address" className={input} />
-              <input name="postalCode" aria-label="Postal code" autoComplete="postal-code" required maxLength={10} placeholder="Postal code" className={input} />
             </fieldset>
             <fieldset className="space-y-3">
               <legend className="mb-3 text-xl uppercase">Product</legend>
@@ -109,7 +107,12 @@ function Purchase() {
             </fieldset>
           </div>
           <aside className="h-fit space-y-4 rounded-xl border border-border bg-card p-6 md:sticky md:top-28">
-            <h2 className="text-xl uppercase">Payment</h2>
+            <h2 className="text-xl uppercase">Pickup</h2>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{PICKUP_LOCATION}</span>. We'll email you a pickup date
+              after you order.
+            </p>
+            <h2 className="border-t border-border pt-4 text-xl uppercase">Pay at pickup</h2>
             {payments.map((p) => (
               <label key={p} className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-2.5 ${pay === p ? "border-accent" : "border-border"}`}>
                 <input type="radio" name="pay" checked={pay === p} onChange={() => setPay(p)} className="accent-[var(--accent)]" />
@@ -122,9 +125,9 @@ function Purchase() {
               <div className="flex justify-between"><span>Quantity</span><span>× {qty}</span></div>
               <div className="flex justify-between pt-2 text-lg font-semibold text-foreground"><span>Total</span><span>S${total}</span></div>
             </div>
-            <p className="text-sm text-muted-foreground">Payment preference only; no payment is collected here.</p>
+            <p className="text-sm text-muted-foreground">Nothing is charged online. You pay when you collect your order.</p>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={pending} className="h-auto w-full rounded-full px-6 py-3 font-semibold hover:bg-accent hover:text-accent-foreground">{pending ? "Sending order…" : "Check Out"}</Button>
+            <Button type="submit" disabled={pending} className="h-auto w-full rounded-full px-6 py-3 font-semibold hover:bg-accent hover:text-accent-foreground">{pending ? "Sending order…" : "Place Order"}</Button>
           </aside>
         </form>
       </Section>

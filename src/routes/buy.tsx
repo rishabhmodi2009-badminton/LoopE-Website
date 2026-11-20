@@ -15,12 +15,12 @@ export const Route = createFileRoute("/buy")({
   component: Buy,
 });
 
-const steps = ["Customise", "Check Out", "Get it Delivered"];
+const steps = ["Customise your leash", "Place your order", "Pick up at the SAS High School Office and pay by cash or PayNow"];
 
 function Buy() {
   return (
     <>
-      <PageHero eyebrow="Buy" title="Get Your Leash">Ordering is simple. Customise your leash and check out in minutes.</PageHero>
+      <PageHero eyebrow="Buy" title="Get Your Leash">Order online, then collect and pay in person. We'll email you a pickup date.</PageHero>
       <Section>
         <div className="grid items-center gap-10 md:grid-cols-2">
           <ol className="space-y-4">

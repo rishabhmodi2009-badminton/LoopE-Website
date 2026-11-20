@@ -5,7 +5,6 @@ import { orderDetails, orderSchema } from "@/lib/orders";
 const order = {
   id: "204db1b9-3248-45d8-8fb1-1b5447aef951",
   name: "Test Customer", email: "test@example.com", phone: "81234567",
-  address: "Test delivery address", postalCode: "123456",
   product: 0, quantity: 2, length: 1, colour: 1, payment: "PayNow" as const,
 };
 describe("Purchase orders", () => {
@@ -20,6 +19,6 @@ describe("Purchase orders", () => {
     expect(copy.total).toBe(72);
   });
   it("rejects incomplete order copies", () => {
-    expect(orderSchema.safeParse({ ...order, address: "" }).success).toBe(false);
+    expect(orderSchema.safeParse({ ...order, phone: "" }).success).toBe(false);
   });
 });

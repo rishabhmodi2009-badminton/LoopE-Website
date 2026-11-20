@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { COMPANY_EMAIL } from "./company";
+import { COMPANY_EMAIL, PICKUP_LOCATION } from "./company";
 import { orderDetails, orderSchema } from "./orders";
 
 const escape = (s: string) =>
@@ -21,13 +21,12 @@ export const submitOrder = createServerFn({ method: "POST" })
       ["Name", order.name],
       ["Email", order.email],
       ["Phone", order.phone],
-      ["Delivery address", order.address],
-      ["Postal code", order.postalCode],
+      ["Pickup", PICKUP_LOCATION],
       ["Product", product.name],
       ["Quantity", String(order.quantity)],
       ["Length", length.label],
       ["Colour", colour.label],
-      ["Payment preference", order.payment],
+      ["Paying at pickup by", order.payment],
       ["Unit price", `S$${unitPrice}`],
       ["Total", `S$${total}`],
     ];
@@ -48,7 +47,7 @@ export const submitOrder = createServerFn({ method: "POST" })
         text: rows.map(([k, v]) => `${k}: ${v}`).join("\n"),
         html: `<h2>New LoopE order</h2><table cellpadding="6" style="border-collapse:collapse">${rows
           .map(([k, v]) => `<tr><td style="color:#666">${k}</td><td><strong>${escape(v)}</strong></td></tr>`)
-          .join("")}</table><p>Reply to this email to contact the customer.</p>`,
+          .join("")}</table><p>Reply to this email to send the customer their pickup date.</p>`,
       }),
     });
 
