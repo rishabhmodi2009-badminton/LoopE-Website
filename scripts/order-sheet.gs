@@ -29,12 +29,20 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-    const last = sheet.getLastRow();
-    const ids = last > 1 ? sheet.getRange(2, HEADERS.length, last - 1, 1).getValues().flat() : [];
+    // getLastRow() counts the pre-filled Paid? checkboxes, so find the first row without an Order ID.
+    const ids = sheet.getRange(2, HEADERS.length, sheet.getMaxRows() - 1, 1).getValues().flat();
     if (ids.includes(data.id)) return reply("ok (already recorded)");
-    sheet.appendRow([new Date(), data.reference, data.name, data.email, "'" + data.phone, data.product,
-      data.quantity, data.length, data.colour, data.total, data.payment,
-      data.confirmationSent ? "Yes" : "No", "New", "", false, "", data.id]);
+    let row = ids.indexOf("") + 2;
+    if (row === 1) {
+      sheet.insertRowsAfter(sheet.getMaxRows(), 100);
+      row = sheet.getMaxRows() - 99;
+      sheet.getRange(row - 1, 1, 1, HEADERS.length).copyTo(sheet.getRange(row, 1, 100, HEADERS.length),
+        SpreadsheetApp.CopyPasteType.PASTE_DATA_VALIDATION, false);
+      sheet.getRange(row, HEADERS.indexOf("Paid?") + 1, 100).insertCheckboxes();
+    }
+    sheet.getRange(row, 1, 1, HEADERS.length).setValues([[new Date(), data.reference, data.name, data.email,
+      "'" + data.phone, data.product, data.quantity, data.length, data.colour, data.total, data.payment,
+      data.confirmationSent ? "Yes" : "No", "New", "", false, "", data.id]]);
     return reply("ok");
   } finally {
     lock.releaseLock();
