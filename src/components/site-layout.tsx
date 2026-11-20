@@ -13,7 +13,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-3">
-        <Link to="/" aria-label="LoopE home">
+        <Link to="/" aria-label="LoopE home" className="block bg-background">
           <img src="/loope-logo.png" alt="LoopE Leashes logo" className="h-16 w-auto mix-blend-lighten sm:h-20" />
         </Link>
         <nav className="flex flex-wrap gap-1">
